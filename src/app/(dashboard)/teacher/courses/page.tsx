@@ -3,7 +3,7 @@ import React from 'react'
 function page() {
   return (
     <div>
-       this is search page 
+        courses page
     </div>
   )
 }

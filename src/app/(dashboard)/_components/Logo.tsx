@@ -14,7 +14,7 @@ function Logo() {
         height={50}
         className="w-12 h-12"
       />
-      <span className={`text-2xl font-extrabold ${playfair.className} text-blue-600`}>
+      <span className={`text-2xl font-extrabold ${playfair.className} text-sky-700`}>
         Campuspro
       </span>
     </div>

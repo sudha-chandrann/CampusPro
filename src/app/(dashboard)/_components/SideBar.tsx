@@ -4,7 +4,7 @@ import GuestRoutes from './GuestRoutes'
 
 function SideBar() {
   return (
-    <div className='h-full w-full border-r flex flex-col overflow-y-auto  bg-slate-200 shadow-sm'>
+    <div className='h-full w-full border-r flex flex-col overflow-y-auto  shadow-md'>
        <div className='py-2 px-2 '>
           <Logo/>
        </div>
