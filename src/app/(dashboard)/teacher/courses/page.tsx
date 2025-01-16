@@ -5,7 +5,7 @@ import React from 'react'
 
 function page() {
   return (
-    <div className='bg-pink-400'>
+    <div >
       <Link href="/teacher/create">
         <Button> New Course</Button>
       </Link>
