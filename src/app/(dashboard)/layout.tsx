@@ -9,13 +9,13 @@ function DashboardLayout({
   }>) {
   return (
     <div className='h-screen flex'>
-        <div className='h-[60px] md:pl-56 lg:pl-64 fixed insert-y-0 w-full '>
+        <div className='h-[60px] md:pl-56 lg:pl-64 fixed insert-y-0 w-full bg-white'>
           <Navbar/>
         </div>
         <div className='hidden md:flex w-56 lg:w-64 h-full flex-col fixed insert-y-0 z-50 '>
           <SideBar/>
         </div>
-        <div className='md:ml-56 lg:ml-64 mt-[60px]'> {children}</div>
+        <div className='md:ml-56 lg:ml-64 mt-[60px] w-full'> {children}</div>
      
     </div>
   )
