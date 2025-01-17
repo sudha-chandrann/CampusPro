@@ -5,6 +5,7 @@ import { LayoutDashboard } from "lucide-react";
 import { redirect } from "next/navigation";
 import TittleForm from "./_compnenets/TittleForm";
 import DescriptionForm from "./_compnenets/DescriptionForm";
+import ImageForm from "./_compnenets/ImageForm";
 async function Page({ params }: { params: { courseId: string } }) {
 
     const { userId } = await auth()
@@ -48,7 +49,8 @@ async function Page({ params }: { params: { courseId: string } }) {
         <div className="flex flex-wrap items-center justify-between  gap-3 mt-4 md:mt-10 ">
           <div className="h-full flex flex-col gap-y-4">
           <TittleForm initialData={{title:course.title}} courseId={params.courseId}/>
-          <DescriptionForm initialData={{ description: course.description?course.description:"" }} courseId={params.courseId} />        
+          <DescriptionForm initialData={{ description: course.description?course.description:"" }} courseId={params.courseId} />
+          <ImageForm initialData={{imageUrl:course.imageUrl?course.imageUrl:""}} courseId={params.courseId}/>        
           </div>
         </div>
     </div>
