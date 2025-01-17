@@ -1,4 +1,4 @@
-// 'use client';
+
 import { IconBadge } from "@/components/customui/IconBadge";
 import { db } from "@/lib/db";
 import { auth } from '@clerk/nextjs/server';
@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import TittleForm from "./_compnenets/TittleForm";
 import DescriptionForm from "./_compnenets/DescriptionForm";
 import ImageForm from "./_compnenets/ImageForm";
+import CategoryForm from "./_compnenets/CategoryForm";
 
 async function Page({ params }: { params: { courseId: string } }) {
   const { userId } = await auth();
@@ -24,6 +25,9 @@ async function Page({ params }: { params: { courseId: string } }) {
     console.error("Course not found");
     return redirect('/teacher/courses');
   }
+  else{
+    console.log(" the course is ",course)
+  }
 
   const requiredFields = [
     course.title,
@@ -32,6 +36,13 @@ async function Page({ params }: { params: { courseId: string } }) {
     course.price,
     course.categroyId,
   ];
+ 
+  const categories= await db.category.findMany({
+    orderBy:{
+      name: 'asc',
+    },
+  });
+  console.log("the categories are ",categories);
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -56,6 +67,12 @@ async function Page({ params }: { params: { courseId: string } }) {
           <TittleForm initialData={{ title: course.title }} courseId={params.courseId} />
           <DescriptionForm initialData={{ description: course.description || "" }} courseId={params.courseId} />
           <ImageForm initialData={{ imageUrl: course.imageUrl || "" }} courseId={params.courseId} />
+        </div>
+        <div className="h-full flex flex-col gap-y-4">
+          <CategoryForm initialData={course} courseId={params.courseId} 
+           options={categories.map((category)=>({label:category.name,value:category.id}))}
+           />
+
         </div>
       </div>
     </div>

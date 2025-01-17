@@ -18,7 +18,6 @@ function FileUploader  ({
           signatureEndpoint="/api/signcloudinary"
           onSuccess={(result) => {
             onChange(result?.info);
-            console.log("Upload result:", result);
           }}
           onQueuesEnd={(result, { widget }) => {
             widget.close();
