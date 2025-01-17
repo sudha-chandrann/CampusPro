@@ -54,7 +54,7 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   return (
-    <div className="w-[400px] md:w-[450px] p-4 px-6 bg-slate-100 rounded-md">
+    <div className="w-[380px] md:w-[450px] p-4 px-6 bg-slate-100 rounded-md">
       <div className="font-medium flex items-center justify-between">
         <span>Course Description</span>
         <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>

@@ -17,28 +17,7 @@ export async function PATCH(
     }
 
     const values = await req.json();
-
-    if (!values || typeof values.title !== "string" || values.title.trim() === "") {
-      return NextResponse.json(
-        { error: "Invalid data provided" },
-        { status: 400 }
-      );
-    }
-
-    const courseExists = await db.course.findFirst({
-      where: {
-        id: params.courseId,
-        userId, 
-      },
-    });
-
-    if (!courseExists) {
-      return NextResponse.json(
-        { error: "Course not found or unauthorized" },
-        { status: 404 }
-      );
-    }
-
+    
     const updatedCourse = await db.course.update({
       where: {
         id: params.courseId,
