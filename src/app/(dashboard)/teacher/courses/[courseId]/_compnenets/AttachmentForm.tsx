@@ -26,6 +26,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
   const [file, setFile] = React.useState<File>();
   const { edgestore } = useEdgeStore();
   const [name,setname]=useState<string>("");
+  const [progress,setprogress]=useState(0);
 
   useEffect(()=>{
     console.log("the file  is ",file)
@@ -36,6 +37,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
       toast.success("Course attachment updated successfully!");
       setIsEditing(false);
+      setprogress(0)
       router.refresh();
     } catch (error) {
       console.error("Error updating Course Image:", error);
@@ -48,6 +50,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
       setDeletingId(id);
       await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
       toast.success("Course attachment is deleted successfully!");
+
       router.refresh();
     } catch {
       toast.error("Something went wrong. Please try again.");
@@ -123,6 +126,14 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
                 setname(e.target.files?.[0].name)
               }}
             />
+            <div className="h-[6px] w-44 border rounded overflow-hidden">
+              <div 
+              className="h-full bg-sky-600"
+              style={{
+                width:`${progress}%`
+              }}
+              />
+            </div>
             <Button
               variant="teacher"
               size="teacher"
@@ -131,7 +142,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
                   const res = await edgestore.publicFiles.upload({
                     file,
                     onProgressChange: (progress) => {
-                      console.log(progress);
+                      setprogress(progress)
                     },
                   });
                   onSubmit({url:res.url,name:name})

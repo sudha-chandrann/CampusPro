@@ -13,5 +13,5 @@ const handler = createEdgeStoreNextHandler({
 
 export { handler as GET, handler as POST };
 
-
+export  default edgeStoreRouter
 export type EdgeStoreRouter = typeof edgeStoreRouter;

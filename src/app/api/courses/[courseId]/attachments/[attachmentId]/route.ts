@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
+import { backendClient } from "@/lib/edgestore-server";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+  
 
 export async function DELETE(
   req: Request,
@@ -16,7 +18,6 @@ export async function DELETE(
       );
     }
 
-    // Verify course ownership
     const courseOwner = await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -30,7 +31,6 @@ export async function DELETE(
       );
     }
 
-    // Delete attachment
     const attachment = await db.attachment.findUnique({
       where: {
         id: params.attachmentId,
@@ -43,6 +43,10 @@ export async function DELETE(
         { status: 404 }
       );
     }
+     await backendClient.publicFiles.deleteFile({
+      url: attachment.url,
+    });
+
 
     await db.attachment.delete({
       where: {
