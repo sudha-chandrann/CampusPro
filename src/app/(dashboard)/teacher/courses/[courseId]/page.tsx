@@ -1,13 +1,14 @@
 import { IconBadge } from "@/components/customui/IconBadge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
+import { CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import TittleForm from "./_compnenets/TittleForm";
 import DescriptionForm from "./_compnenets/DescriptionForm";
 import ImageForm from "./_compnenets/ImageForm";
 import CategoryForm from "./_compnenets/CategoryForm";
 import PriceForm from "./_compnenets/PriceForm";
+import AttachmentForm from "./_compnenets/AttachmentForm";
 
 async function Page({ params }: { params: { courseId: string } }) {
   const { userId } = await auth();
@@ -19,6 +20,13 @@ async function Page({ params }: { params: { courseId: string } }) {
 
   const course = await db.course.findUnique({
     where: { id: params.courseId },
+    include: {
+      attachments:{
+        orderBy: {
+          createAt: 'desc',
+        },
+      }
+    }
   });
 
   if (!course) {
@@ -41,7 +49,6 @@ async function Page({ params }: { params: { courseId: string } }) {
       name: "asc",
     },
   });
-  console.log("the categories are ", categories);
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -89,11 +96,19 @@ async function Page({ params }: { params: { courseId: string } }) {
             <h1 className="text-lg text-slate-600"> Course Chapters</h1>
         </div>
         <div className="flex items-center gap-x-2 ">
-            <IconBadge size="sm" icon={CircleDollarSign} />
+          <IconBadge size="sm" icon={CircleDollarSign} />
             <h1 className="text-sm text-slate-600">Sell Your Course</h1>
         </div>
         <PriceForm
             initialData={{ price: course.price }}
+            courseId={params.courseId}
+          />
+        <div className="flex items-center gap-x-2 ">
+          <IconBadge size="sm" icon={File} />
+            <h1 className="text-sm text-slate-600">Resource and Attachments</h1>
+        </div>
+        <AttachmentForm
+            initialData={course}
             courseId={params.courseId}
           />
         </div>
