@@ -70,7 +70,7 @@ async function Page({ params }: { params: { courseId: string } }) {
         </span>
       </div>
 
-      <div className="flex flex-wrap  justify-between gap-3 mt-4 md:mt-10 h-fit">
+      <div className="grid grid-cols-1 lg:grid-cols-2 justify-items-center gap-3 mt-4 md:mt-10 h-fit">
         <div className="h-full flex flex-col gap-y-4 ">
           <div className="flex items-center gap-x-2">
             <IconBadge size="sm" icon={LayoutDashboard} />

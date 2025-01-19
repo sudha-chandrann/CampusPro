@@ -12,12 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import {  Loader2, PlusCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Chapter, Course } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import ChapterList from "./ChapterList";
 
 interface ChapterFormProps {
   initialData: Course &{ chapters : Chapter[] } ;
@@ -29,6 +30,8 @@ const formSchema = z.object({
 });
 
 function ChapterForm({ initialData, courseId }: ChapterFormProps) {
+
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,7 +40,7 @@ function ChapterForm({ initialData, courseId }: ChapterFormProps) {
   });
 
   const { isSubmitting, isValid } = form.formState;
-
+  const [isUpdating,setisUpdating]=useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const toggleCreating = () => setIsCreating((current) => !current);
 
@@ -55,8 +58,39 @@ function ChapterForm({ initialData, courseId }: ChapterFormProps) {
     }
   };
 
+  const onReorder = async ( updateData:{id:string; position: number}[])=>{
+    try{
+      setisUpdating(true);
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, 
+        {
+          list:updateData
+        }
+      );
+      toast.success("Chapters reordered")
+      router.refresh();
+    }
+    catch{
+      toast.error("Something went wrong");
+    }
+    finally{
+      setisUpdating(false);
+    }
+  }
+
+  const onEdit = (id:string) => {
+    router.push(`/teacher/courses/${courseId}/chapters/${id}`)
+  }
+
+
   return (
-    <div className="w-[380px] md:w-[450px] p-4 px-6 bg-slate-100 rounded-md">
+    <div className="w-[380px] md:w-[450px] p-4 px-6 bg-slate-100 rounded-md relative">
+      {
+        isUpdating && (
+          <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-md flex items-center justify-center"> 
+            <Loader2 className="animate-spin h-6 w-6 text-sky-700"/>
+          </div>
+        )
+      }
       <div className="font-medium flex items-center justify-between">
         <span>Course Chapters</span>
         <Button
@@ -120,9 +154,16 @@ function ChapterForm({ initialData, courseId }: ChapterFormProps) {
       }
       {
         !isCreating && (
+          <div className="w-full">
+            <ChapterList items={initialData.chapters|| []} 
+            onReorder={onReorder} 
+            onEdit={onEdit}
+            />
             <p className="text-xs text-muted-foreground mt-2">
             Drag and drop to reorder the chapters
             </p>
+          </div>  
+
         )
      }
 
