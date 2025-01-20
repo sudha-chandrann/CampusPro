@@ -16,7 +16,7 @@ export async function PATCH(
       );
     }
 
-    const values = await req.json();
+    const {isPublished,...values} = await req.json();
     
     const updatedChapter = await db.chapter.update({
       where: {
