@@ -90,7 +90,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
                 href={attachment.url}
                 target="_blank"
                 download={attachment.name} 
-                className="text-sm line-clamp-1 mr-2 cursor-pointer hover:underline"
+                className="text-sm line-clamp-1 mr-2 cursor-pointer hover:underline text-sky-700"
               >
                 {attachment.name}
               </a>
