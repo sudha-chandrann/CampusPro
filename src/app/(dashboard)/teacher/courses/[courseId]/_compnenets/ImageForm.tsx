@@ -4,7 +4,6 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { CldImage } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import toast from "react-hot-toast";
@@ -88,6 +87,7 @@ function ImageForm({ initialData, courseId }: CourseImageFormProps) {
       {isEditing && (
         <div>
           <FileUploader
+           isImage={true}
             onChange={(info) => {
               if (typeof info === "object" && "url" in info) {
                 onSubmit({ imageUrl: info.url });

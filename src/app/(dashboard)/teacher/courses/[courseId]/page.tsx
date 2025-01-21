@@ -13,14 +13,14 @@ import ChapterForm from "./_compnenets/ChapterForm";
 
 async function Page({ params }: { params: { courseId: string } }) {
   const { userId } = await auth();
-
+  const { courseId } = await params;
   if (!userId) {
     console.error("User not authenticated");
     return redirect("/");
   }
 
   const course = await db.course.findUnique({
-    where: { id: params.courseId,userId },
+    where: { id: courseId,userId },
     include: {
       chapters:{
         orderBy:{
@@ -78,19 +78,19 @@ async function Page({ params }: { params: { courseId: string } }) {
           </div>
           <TittleForm
             initialData={{ title: course.title }}
-            courseId={params.courseId}
+            courseId={courseId}
           />
           <DescriptionForm
             initialData={{ description: course.description || "" }}
-            courseId={params.courseId}
+            courseId={courseId}
           />
           <ImageForm
             initialData={{ imageUrl: course.imageUrl || "" }}
-            courseId={params.courseId}
+            courseId={courseId}
           />
           <CategoryForm
             initialData={course}
-            courseId={params.courseId}
+            courseId={courseId}
             options={categories.map((category) => ({
               label: category.name,
               value: category.id,
@@ -104,7 +104,7 @@ async function Page({ params }: { params: { courseId: string } }) {
         </div>
         <ChapterForm
             initialData={course}
-            courseId={params.courseId}
+            courseId={courseId}
           />
         <div className="flex items-center gap-x-2 ">
           <IconBadge size="sm" icon={CircleDollarSign} />
@@ -112,7 +112,7 @@ async function Page({ params }: { params: { courseId: string } }) {
         </div>
         <PriceForm
             initialData={{ price: course.price }}
-            courseId={params.courseId}
+            courseId={courseId}
           />
         <div className="flex items-center gap-x-2 ">
           <IconBadge size="sm" icon={File} />
@@ -120,7 +120,7 @@ async function Page({ params }: { params: { courseId: string } }) {
         </div>
         <AttachmentForm
             initialData={course}
-            courseId={params.courseId}
+            courseId={courseId}
           />
         </div>
       </div>

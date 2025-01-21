@@ -10,12 +10,10 @@ export async function POST(req: Request) {
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    console.log(" the user is ",userId)
 
     // Parse the request body
     const body = await req.json();
     const { title } = body;
-    console.log(" the title is ",title)
 
     // Validate the title
     if (!title || typeof title !== "string") {
@@ -29,7 +27,6 @@ export async function POST(req: Request) {
         title: title,
       },
     });
-   console.log(" the course is ",course);
     return NextResponse.json(course);
   } catch (error) {
     console.error("[courses]", error);
