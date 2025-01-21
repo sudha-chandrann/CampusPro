@@ -7,37 +7,37 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
-  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Chapter } from "@prisma/client";
-import RichTextEditor from "@/components/customui/RichTextEditor";
-import Preview from "@/components/customui/Preview";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 
-interface DescriptionFormProps {
+interface ChapterAccessProps {
   initialData: Chapter;
   courseId: string;
   chapterId: string;
 }
 
 const formSchema = z.object({
-  description: z.string().min(1, { message: "Description is required" }),
+  isFree: z.boolean().default(false),
 });
 
-function ChapterDescriptionForm({
+function ChapterAccessForm({
   initialData,
   courseId,
   chapterId,
-}: DescriptionFormProps) {
+}: ChapterAccessProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description || "",
+      isFree: !!(initialData.isFree),
     },
   });
 
@@ -66,47 +66,54 @@ function ChapterDescriptionForm({
   return (
     <div className="w-full lg:w-3/5 min-w-[340px] p-4  bg-slate-100 rounded-md">
       <div className="font-medium flex items-center justify-between">
-        <span>Chapter Description</span>
+        <span>Chapter access </span>
         <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
           {isEditing ? (
             "Cancel"
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" /> Edit Description
+              <Pencil className="h-4 w-4 mr-2" /> Edit Access
             </>
           )}
         </Button>
       </div>
 
-      {!isEditing && initialData.description && (
-       <Preview content={initialData.description}/>
-      )}
-      {!isEditing && !initialData.description && (
-        <p className="text-sm mt-2 text-slate-700 italic">No description</p>
+      {!isEditing && (
+        <div className={cn("text-sm mt-2",!initialData.isFree && "text-slate-500 italic")}>
+          {
+            initialData.isFree ?(
+                <>This chapter is free for preview.</>
+            ):(
+                <>This chapter is not free for preview.</>
+            )
+          }
+        </div>
       )}
 
       {isEditing && (
-        <div className="bg-black/45 fixed top-0 left-0 z-50 h-screen w-screen flex items-center justify-center">
-            <Form {...form}>
+
+        <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4 w-full lg:w-3/5 mx-auto"
+            className="space-y-4 mt-4 w-full  mx-auto"
           >
             <FormField
               control={form.control}
-              name="description"
+              name="isFree"
               render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <RichTextEditor
-                     content={initialData.description}
-                     onChange={(value) =>
-                      field.onChange(value)
-                     }
-                     />
-
-                  </FormControl>
-                  <FormMessage />
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
+                   <FormControl>
+                    <Checkbox 
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    />
+                   </FormControl>
+                   <div className="space-y-1 leading-none">
+                    <FormDescription>
+                        Check this box if you want to make this chapter free 
+                        for preview
+                    </FormDescription>
+                   </div>
                 </FormItem>
               )}
             />
@@ -119,19 +126,9 @@ function ChapterDescriptionForm({
               >
                 {isSubmitting ? "Saving..." : "Save Description"}
               </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting || !isValid}
-                variant="teacher"
-                size="sm"
-                onClick={()=>{setIsEditing(false)}}
-              >
-                 Cancal
-              </Button>
             </div>
           </form>
         </Form>
-        </div>
      
       )}
       
@@ -139,4 +136,4 @@ function ChapterDescriptionForm({
   );
 }
 
-export default ChapterDescriptionForm;
+export default ChapterAccessForm;
