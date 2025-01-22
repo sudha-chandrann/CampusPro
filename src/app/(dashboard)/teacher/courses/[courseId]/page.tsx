@@ -73,7 +73,7 @@ async function Page({ params }: { params: { courseId: string } }) {
       {!course.isPublished && (
         <Banner
           variant="warning"
-          label="This course is unpublished.It is not be visible in the courses"
+          label="This course is unpublished.It is not be visible to the students"
         />
       )}
       <div className="h-full p-6 w-full md:px-12">

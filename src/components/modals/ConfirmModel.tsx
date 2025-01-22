@@ -15,11 +15,13 @@ import React, { ReactNode } from "react";
 interface ConfirmModelProps {
     children :ReactNode;
     onConfirm:()=>void;
+    isCourse:boolean;
 }
 
 function ConfirmModel({
   children,
-  onConfirm
+  onConfirm,
+  isCourse
 }: ConfirmModelProps) {
   return (
     <div>
@@ -31,8 +33,12 @@ function ConfirmModel({
           <AlertDialogHeader>
             <AlertDialogTitle className="text-black">Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription className="text-black/70">
-              This action cannot be undone. This will permanently delete your
-              chapter and remove chapter data from our servers.
+            This action cannot be undone.This will permanently delete this 
+            {
+              isCourse ? " course" : "chapter"
+            }
+               
+               . You will not be able to recover this data.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

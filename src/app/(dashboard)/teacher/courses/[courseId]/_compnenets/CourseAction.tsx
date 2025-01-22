@@ -3,7 +3,7 @@ import ConfirmModel from "@/components/modals/ConfirmModel";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Trash } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -14,17 +14,16 @@ interface ChapterActionProps {
   isPublished: boolean;
 }
 
-
-
-
 function CourseActions({
   disabled,
   courseId,
   isPublished,
 }: ChapterActionProps) {
    const router= useRouter();
+   const [isloading,setloading]=useState(false);
     const handleDelete = async () => {
         try {
+          setloading(true);
           await axios.delete(`/api/courses/${courseId}`);
           toast.success("course is  deleted successfully!");
           router.push("/teacher/courses");
@@ -32,11 +31,15 @@ function CourseActions({
           console.error("Error deleting course:", error);
           toast.error("Something went wrong. Please try again.");
         }
+        finally{
+          setloading(false);
+        }
       };
 
 
       const handleTooglepublish = async () => {
         try {
+          setloading(true);
           if(isPublished){
             await axios.patch(`/api/courses/${courseId}/unpublish`)
             toast.success("course is  unpublished successfully!");
@@ -50,6 +53,9 @@ function CourseActions({
           console.error("Error updating publishing:", error);
           toast.error("Something went wrong. Please try again.");
         }
+        finally{
+          setloading(false);
+        }
       };
       
 
@@ -62,16 +68,17 @@ function CourseActions({
         onClick={async () => {
             handleTooglepublish();
          }}
-        disabled={disabled}
+        disabled={disabled || isloading}
       >
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
       <ConfirmModel
+         isCourse={true}
          onConfirm={async () => {
              handleDelete();
-          }}
+         }}
       >
-      <Button size="sm">
+      <Button size="sm" disabled={isloading}>
         <Trash className="w-4 h-4"/>
       </Button>
       </ConfirmModel>

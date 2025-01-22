@@ -3,7 +3,7 @@ import ConfirmModel from "@/components/modals/ConfirmModel";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Trash } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -24,9 +24,12 @@ function ChapterActions({
   chapterId,
   isPublished,
 }: ChapterActionProps) {
+  const [isloading,setloading]=useState(false);
    const router= useRouter();
     const handleDelete = async () => {
+
         try {
+          setloading(true)
           await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
           toast.success("chapter is  deleted successfully!");
           router.back();
@@ -34,11 +37,15 @@ function ChapterActions({
           console.error("Error deleting chapter:", error);
           toast.error("Something went wrong. Please try again.");
         }
+        finally{
+          setloading(false)
+        }
       };
 
 
       const handleTooglepublish = async () => {
         try {
+          setloading(true)
           if(isPublished){
             await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`)
             toast.success("chapter is  unpublished successfully!");
@@ -53,6 +60,9 @@ function ChapterActions({
           console.error("Error updating publishing:", error);
           toast.error("Something went wrong. Please try again.");
         }
+        finally{
+          setloading(false)
+        }
       };
       
 
@@ -65,16 +75,17 @@ function ChapterActions({
         onClick={async () => {
             handleTooglepublish();
          }}
-        disabled={disabled}
+        disabled={disabled|| isloading}
       >
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
       <ConfirmModel
+         isCourse={false}
          onConfirm={async () => {
              handleDelete();
           }}
       >
-      <Button size="sm">
+      <Button size="sm" disabled={isloading}>
         <Trash className="w-4 h-4"/>
       </Button>
       </ConfirmModel>
