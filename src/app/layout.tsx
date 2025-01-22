@@ -4,6 +4,7 @@ import "./globals.css";
 import {ClerkProvider} from "@clerk/nextjs"
 import Toasterprovider from "@/provider/Toastprovider";
 import { EdgeStoreProvider } from '../lib/edgestore';
+import { ConfettiProvider } from "@/provider/ConfettiProvider";
 
 
 const geistSans = Geist({
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
        <EdgeStoreProvider>
+        <ConfettiProvider/>
        <Toasterprovider/>
        {children}
        </EdgeStoreProvider>
