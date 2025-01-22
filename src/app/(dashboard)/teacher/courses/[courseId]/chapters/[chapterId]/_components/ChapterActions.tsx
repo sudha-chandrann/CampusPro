@@ -7,12 +7,16 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+
 interface ChapterActionProps {
   disabled: boolean;
   courseId: string;
   chapterId: string;
   isPublished: boolean;
 }
+
+
+
 
 function ChapterActions({
   disabled,
@@ -31,6 +35,18 @@ function ChapterActions({
           toast.error("Something went wrong. Please try again.");
         }
       };
+
+
+      const handleTooglepublish = async (values: {isPublished:boolean}) => {
+        try {
+          await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+          toast.success("chapter is  updated successfully!");
+          router.refresh();
+        } catch (error) {
+          console.error("Error updating title:", error);
+          toast.error("Something went wrong. Please try again.");
+        }
+      };
       
 
 
@@ -39,7 +55,9 @@ function ChapterActions({
       <Button
         variant="teacher"
         size="sm"
-        onClick={() => {}}
+        onClick={async () => {
+            handleTooglepublish({isPublished:!isPublished});
+         }}
         disabled={disabled}
       >
         {isPublished ? "Unpublish" : "Publish"}
