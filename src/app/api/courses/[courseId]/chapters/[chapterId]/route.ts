@@ -27,7 +27,7 @@ export async function PATCH(
     }
 
     // Parse and validate request body
-    const { isPublished, ...values } = await req.json();
+    const {  ...values } = await req.json();
 
 
     if (!params.courseId || !params.chapterId) {
@@ -50,7 +50,6 @@ export async function PATCH(
         courseId: params.courseId,
       },
       data: {
-        isPublished: isPublished,
         ...values,
       },
     });
@@ -64,7 +63,6 @@ export async function PATCH(
             chapterId: params.chapterId,
           },
         });
-        console.log(" the existingMuxData is ", existingMuxData);
 
         // If Mux data exists, delete the old asset and record
         if (existingMuxData) {
