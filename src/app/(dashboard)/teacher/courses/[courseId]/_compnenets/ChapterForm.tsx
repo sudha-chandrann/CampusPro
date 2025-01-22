@@ -83,7 +83,7 @@ function ChapterForm({ initialData, courseId }: ChapterFormProps) {
 
 
   return (
-    <div className="w-[380px] md:w-[450px] p-4 px-6 bg-slate-100 rounded-md relative">
+    <div className="w-full lg:w-4/5 min-w-[320px]  p-3 md:p-4  bg-slate-100 rounded-md ">
       {
         isUpdating && (
           <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-md flex items-center justify-center"> 

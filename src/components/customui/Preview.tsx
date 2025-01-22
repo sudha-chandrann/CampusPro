@@ -98,7 +98,7 @@ export default function Preview({ content }:RichTextEditor) {
     content: content,
     editorProps: {
       attributes: {
-        class: " border rounded-md bg-slate-50 py-2 px-3",
+        class: " border rounded-md bg-slate-50  py-2 px-3 ",
       },
     },
     editable: false,
@@ -106,7 +106,7 @@ export default function Preview({ content }:RichTextEditor) {
   });
 
   return (
-    <div>
+    <div className="relative">
       <EditorContent editor={editor} />
     </div>
   );

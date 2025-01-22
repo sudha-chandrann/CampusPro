@@ -49,7 +49,7 @@ function ChapterVideoForm({
   const toggleEdit = () => setIsEditing((current) => !current);
 
   return (
-    <div className="w-full lg:w-3/5 min-w-[340px] p-4 bg-slate-100 rounded-md">
+    <div className="w-full lg:w-4/5 min-w-[320px] p-4 bg-slate-100 rounded-md">
       <div className="font-medium flex items-center justify-between">
         <span>Chapter Video</span>
         <Button variant="ghost" onClick={toggleEdit} >

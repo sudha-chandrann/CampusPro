@@ -60,7 +60,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   return (
-    <div className="w-[380px] mb-4 md:w-[450px] p-4 px-6 bg-slate-100 rounded-md">
+    <div className="w-full lg:w-4/5 min-w-[320px]  p-3 md:p-4  bg-slate-100 rounded-md">
       <div className="font-medium flex items-center justify-between">
         <span>Course Attachment</span>
         <Button variant="ghost" onClick={toggleEdit}>

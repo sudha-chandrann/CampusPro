@@ -66,17 +66,17 @@ const ChapterIdPage = async ({
                 </h1>
                 <span>Complete all fields {completionText}</span>
               </div>
-              <div>
+              <div className="ml-auto mt-2">
                 <ChapterActions disabled={!iscomplete} chapterId={chapterId} courseId={courseId} isPublished={chapter.isPublished}/>
               </div>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 justify-items-center">
-          <div className="space-y-4 ">
-            <div className="flex items-center gap-x-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10 ">
+          <div className="space-y-4 w-full justify-items-center">
+            <div className="flex items-center gap-x-2 w-full lg:w-4/5">
               <IconBadge icon={LayoutDashboard} />
-              <h2 className="text-xl">Customize your chapter</h2>
+              <h2 className="text-xl text-slate-600">Customize your chapter</h2>
             </div>
             <TitleForm
               initialData={chapter}
@@ -88,9 +88,9 @@ const ChapterIdPage = async ({
               chapterId={chapterId}
               courseId={courseId}
             />
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2 w-full lg:w-4/5">
               <IconBadge icon={Eye} />
-              <h2 className="text-xl">Access Settings</h2>
+              <h2 className="text-xl text-slate-600">Access Settings</h2>
             </div>
             <ChapterAccessForm
               initialData={chapter}
@@ -98,10 +98,10 @@ const ChapterIdPage = async ({
               courseId={courseId}
             />
           </div>
-          <div className="space-y-4 ">
-            <div className="flex items-center gap-x-2">
+          <div className="space-y-4  w-full justify-items-center">
+            <div className="flex items-center gap-x-2 w-full lg:w-4/5">
               <IconBadge icon={Video} />
-              <h2 className="text-lg">Add a video</h2>
+              <h2 className="text-lg text-slate-600">Add a video</h2>
             </div>
             <ChapterVideoForm
               initialData={chapter}

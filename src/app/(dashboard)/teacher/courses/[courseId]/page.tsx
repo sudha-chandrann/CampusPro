@@ -89,9 +89,9 @@ async function Page({ params }: { params: { courseId: string } }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 justify-items-center gap-3 mt-4 md:mt-10 h-fit">
-          <div className="h-full flex flex-col gap-y-4 ">
-            <div className="flex items-center gap-x-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
+          <div className="space-y-4 w-full justify-items-center">
+            <div className="flex items-center gap-x-2 w-full min-w-[320px] lg:w-4/5">
               <IconBadge size="sm" icon={LayoutDashboard} />
               <h1 className="text-lg text-slate-600">Customize your course</h1>
             </div>
@@ -116,13 +116,13 @@ async function Page({ params }: { params: { courseId: string } }) {
               }))}
             />
           </div>
-          <div className=" flex flex-col gap-y-4">
-            <div className="flex items-center gap-x-2 ">
+          <div className=" space-y-4 w-full justify-items-center">
+            <div className="flex items-center gap-x-2 w-full lg:w-4/5 min-w-[320px]">
               <IconBadge size="sm" icon={ListChecks} />
               <h1 className="text-lg text-slate-600"> Course Chapters</h1>
             </div>
             <ChapterForm initialData={course} courseId={courseId} />
-            <div className="flex items-center gap-x-2 ">
+            <div className="flex items-center gap-x-2 w-full lg:w-4/5 min-w-[320px]">
               <IconBadge size="sm" icon={CircleDollarSign} />
               <h1 className="text-sm text-slate-600">Sell Your Course</h1>
             </div>
@@ -130,7 +130,7 @@ async function Page({ params }: { params: { courseId: string } }) {
               initialData={{ price: course.price }}
               courseId={courseId}
             />
-            <div className="flex items-center gap-x-2 ">
+            <div className="flex items-center gap-x-2 w-full lg:w-4/5 min-w-[320px]">
               <IconBadge size="sm" icon={File} />
               <h1 className="text-sm text-slate-600">
                 Resource and Attachments
