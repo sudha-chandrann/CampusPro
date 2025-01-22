@@ -104,3 +104,40 @@ export async function PATCH(
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { courseId: string; chapterId: string } }
+) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
+    }
+
+    if (!params.courseId || !params.chapterId) {
+      return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
+    }
+
+    const course = await db.course.findUnique({
+      where: { id: params.courseId, userId },
+    });
+
+    if (!course) {
+      return NextResponse.json({ error: "Unauthorized action" }, { status: 403 });
+    }
+    const chapter = await db.chapter.delete({
+      where: { id: params.chapterId ,courseId:params.courseId},
+    });
+    console.log(" the  deleted chapter is ",chapter)
+
+
+   
+    return NextResponse.json({message :"chapter is deleted successfully"}, { status: 200 });
+  } catch (error) {
+    console.error("[COURSE_ID_PATCH_ERROR]", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
