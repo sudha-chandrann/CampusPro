@@ -2,7 +2,7 @@ import React from 'react'
 
 function page() {
   return (
-    <div>
+    <div className='p-4'>
        this is analytics page
     </div>
   )

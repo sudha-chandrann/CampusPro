@@ -1,16 +1,24 @@
-"use client";
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import React from 'react'
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from 'next/navigation';
+import { db } from '@/lib/db';
+import CoursesClient from "./_components/CoursesClient";
 
-function page() {
-  return (
-    <div >
-      <Link href="/teacher/create">
-        <Button> New Course</Button>
-      </Link>
-    </div>
-  )
+export default async function Page() {
+  const { userId } = await auth();
+  
+  if (!userId) {
+    console.error("User not authenticated");
+    return redirect("/");
+  }
+
+  const data = await db.course.findMany({
+    where: {
+      userId: userId,
+    },
+    orderBy: {
+      createAt: 'desc',
+    },
+  });
+
+  return <CoursesClient data={data} />;
 }
-
-export default page
