@@ -25,7 +25,7 @@ function CategoryItem({
     const currentCategoryId=searchParams.get("categoryId");
     const currentTitle=searchParams.get("title");
 
-    const isSelected= currentCategoryId === value;
+    const isSelected = currentCategoryId === value;
      
     const onClick =() =>{
        const url=qs.stringifyUrl(

@@ -18,7 +18,7 @@ function Navbar() {
     <div className='h-full shadow-md  flex px-4  items-center justify-between '>
                  {
       isSearchPage && (
-        <div className='hidden md:block mr-auto'>
+        <div className='hidden md:block mr-auto ml-3'>
           <SearchInput/>
         </div>
       )
