@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <div className="h-screen  flex items-center justify-center">
           <FileUploader 
+           isImage={true}
             onChange={(info)=> {
               if(info){
                 console.log("the info is ",info)
