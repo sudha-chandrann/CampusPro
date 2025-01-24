@@ -25,7 +25,7 @@ function CoursesList({ items }: CourseListProps) {
           No Courses found
         </div>
       )}
-      <div className="w-full  grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="w-full  grid grid-cols-1  gap-x-6 gap-y-4 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4">
         {items.map((item) => (
          <Link href={`/courses/${item.id}`}  key={item.id}>
         <div
@@ -38,7 +38,7 @@ function CoursesList({ items }: CourseListProps) {
                 alt={item.title}
                 width={300}
                 height={200}
-                className="w-full "
+                className="w-full object-center object-cover"
               />
             </div>
             <div className="flex flex-col pt-2">

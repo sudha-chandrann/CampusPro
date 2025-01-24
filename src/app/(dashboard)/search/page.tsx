@@ -34,13 +34,16 @@ const SearchPage = async ({
 
   return (
     <>
+    <div>
     <div className="md:hidden md:mb-0  w-full pt-3 ml-5 flex items-center">
      <SearchInput/>
     </div>
-    <div>
+    <div className="w-full">
       <Categories  items={categories}/>
       <CoursesList items={courses}/>
     </div>
+    </div>
+
     </>
 
   )

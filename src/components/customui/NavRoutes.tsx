@@ -11,7 +11,7 @@ function NavRoutes() {
     const pathname=usePathname();
 
     const isTeacherPage=pathname?.startsWith("/teacher");
-    const isPlayerPage=pathname?.includes("/chapter");
+    const isCoursePage=pathname?.includes("/courses");
 
 
   return (
@@ -19,7 +19,7 @@ function NavRoutes() {
 
         <div className='flex gap-x-3 ml-auto'>
         {
-            isTeacherPage || isPlayerPage ?
+            isTeacherPage || isCoursePage ?
             (
             <Link href="/dashboard">
                 <Button variant="teacher" size="teacher">
