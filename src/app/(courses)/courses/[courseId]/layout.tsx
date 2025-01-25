@@ -53,7 +53,7 @@ async function CourseLayout({
 
   return (
     <div className="h-dvh  flex">
-      <div className="h-[80px] md:pl-80  fixed insert-y-0 w-full  z-50 shadow-md">
+      <div className="h-[80px] md:pl-80  fixed insert-y-0 w-full  z-50 shadow-md bg-white">
         <CourseNavBar course={course} progresscount={progresscount} />
       </div>
       <div className=" hidden md:flex flex-col fixed inset-y-0 z-50 w-80 h-full bg-white">

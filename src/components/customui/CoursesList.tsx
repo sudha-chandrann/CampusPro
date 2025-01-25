@@ -51,10 +51,10 @@ function CoursesList({ items }: CourseListProps) {
               <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
                 <div className="flex items-center gap-x-1 text-slate-500">
                   <IconBadge icon={BookOpen} size="sm" />
-                  <div className=" flex items-center gap-x-1 text-sm">
+                  <div className=" flex items-center gap-x-1 text-sm ">
                     {item?.chapters?.length}
-                    <span>
-                      {item?.chapters?.length === 1 ? "Chapters" : ""}
+                    <span className="">
+                      {item?.chapters?.length >= 1 ? "Chapters" : ""}
                     </span>
                   </div>
                 </div>

@@ -17,7 +17,6 @@ import AttachmentForm from "./_compnenets/AttachmentForm";
 import ChapterForm from "./_compnenets/ChapterForm";
 import Banner from "@/components/customui/Banner";
 import CourseActions from "./_compnenets/CourseAction";
-import toast from "react-hot-toast";
 
 async function Page({ params }: { params: { courseId: string } }) {
   const { userId } = await auth();
@@ -44,7 +43,6 @@ async function Page({ params }: { params: { courseId: string } }) {
   });
 
   if (!course) {
-    toast.error("Course not found");
     return redirect("/teacher/courses");
   } 
 

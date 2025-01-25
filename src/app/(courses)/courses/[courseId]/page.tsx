@@ -1,16 +1,33 @@
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
-
-
-function page()  {
-
+async function page({params}:{
+  params:{
+    courseId:string;
+  }
+})  {
     
+    const course = await db.course.findUnique({
+      where:{
+        id:params.courseId
+      },
+      include:{
+        chapters:{
+          where:{
+            isPublished:true,
+          },
+          orderBy:{
+            position: 'asc',
+          }
+        }
+      }
+    });
 
+     if(!course){
+        return redirect("/");
+     }
 
-    return (
-      <div className='w-full h-full p-4'>
-         this is course id
-         </div>
-    )
+    return  redirect(`/courses/${course.id}/chapters/${course.chapters[0].id}`)
   }
   
   export default page

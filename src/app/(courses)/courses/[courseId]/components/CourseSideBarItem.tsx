@@ -41,7 +41,7 @@ function CourseSideBarItem(
         isCompleted && isActive && "bg-emerald-200/20"
       )}
      onClick={onClick}>
-    <div className='flex items-center gap-x-2 py-5'>
+    <div className='flex items-center gap-x-2 py-4'>
       <Icon
       size={22}
       className={cn(
