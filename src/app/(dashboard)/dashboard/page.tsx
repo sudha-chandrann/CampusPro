@@ -1,19 +1,41 @@
-// app/page.tsx or pages/index.js
-"use client";
+// app/page.tsx or pages/index.tsx
 
-import { useUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { getDashboardCourses } from "../../../../actions/get-dashboard-courses";
+import { redirect } from "next/navigation";
+import CoursesList from "@/components/customui/CoursesList";
+import InfoCard from "../_components/InfoCard";
+import { CheckCircle, Clock } from "lucide-react";
 
-export default function HomePage() {
-  const { user, isSignedIn } = useUser();
-
-  if (!isSignedIn) {
-    return <p>Please sign in to view this page.</p>;
+export default async function HomePage() {
+  const { userId } = await auth();
+  if (!userId) {
+    return redirect("/");
   }
 
+  // Await the result of getDashboardCourses
+  const { completedCourse, courseInProgress } = await getDashboardCourses(userId);
+
   return (
-    <div>
-      <h1>Welcome, {user?.firstName}!</h1>
-      <p>Email: {user?.emailAddresses[0]?.emailAddress}</p>
+    <div className="p-6 space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <InfoCard
+        icon={Clock}
+        label="In Progress "
+        numberOfItems={courseInProgress.length}
+        />
+
+        <InfoCard
+        icon={CheckCircle}
+        label="Completed "
+        numberOfItems={completedCourse.length}
+        variant="success"
+        />
+      </div>
+      <div className=" w-full">
+        <CoursesList items={[...courseInProgress,...completedCourse]} />
+      </div>
+
     </div>
   );
 }

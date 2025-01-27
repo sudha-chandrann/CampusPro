@@ -9,11 +9,6 @@ interface CourseProgressProps {
 }
 
 
-const bgbyvariant={
-  "default": "bg-sky-200",
-  "success": "bg-emerald-500",
-}
-
 const colorByVariant={
   "default": "text-sky-500",
   "success": "text-emerald-500",
@@ -29,7 +24,7 @@ function CourseProgress({ value,variant,size }:CourseProgressProps) {
     <div>
      <Progress
      value={value}
-     className={cn("h-2 bg-sky-300",variant&&`${bgbyvariant[variant]}`)}
+     className={cn("h-2 bg-sky-300",variant&&`${colorByVariant[variant]}`)}
      />
      <p className={cn("font-medium mt-2 text-sky-700", variant && colorByVariant[variant], size && sizeByVariant[size])}>
       {Math.round(value)}% Complete
