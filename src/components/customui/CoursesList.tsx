@@ -6,6 +6,7 @@ import { IconBadge } from "./IconBadge";
 import { BookOpen } from "lucide-react";
 import { formatPrice } from "@/lib/format";
 import Link from "next/link";
+import CourseProgress from "./CourseProgress";
 
 type CourseWithProgressWithCategory = Course & {
   category: Category | null;
@@ -59,17 +60,22 @@ function CoursesList({ items }: CourseListProps) {
                   </div>
                 </div>
               </div>
+              <div className="h-8">
               {
-                item.progress !== null ? (
-                    <div>
-                        Todo: progress component
-                    </div>
+                (item.progress !== null ) ? (  
+                         <CourseProgress
+                          variant={item.progress === 100 ? "success": "default"}
+                          value={item.progress}
+                          size={item.progress === 100 ? "success": "default"}
+                         />
                 ):(
                     <p className="text-sm text-slate-700">
                       {formatPrice(item.price)}
                     </p>
                 )
               }
+              </div>
+
 
             </div>
           </div>

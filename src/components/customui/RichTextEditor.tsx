@@ -106,6 +106,8 @@ export default function RichTextEditor({ content, onChange }:RichTextEditor) {
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
+    immediatelyRender: false, // Fix for SSR
+
   });
 
   return (

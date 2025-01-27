@@ -102,6 +102,8 @@ export default function Preview({ content }:RichTextEditor) {
       },
     },
     editable: false,
+    immediatelyRender: false, // Fix for SSR
+
 
   });
 

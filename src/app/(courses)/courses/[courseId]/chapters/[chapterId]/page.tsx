@@ -8,6 +8,7 @@ import CourseEnrollButton from "../../components/CourseEnrollButton";
 import Preview from "@/components/customui/Preview";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 async function page({
   params,
@@ -21,7 +22,7 @@ async function page({
   if (!userId) {
     return redirect("/");
   }
-
+ const {courseId, chapterId}=await params;
   const {
     chapter,
     course,
@@ -32,8 +33,8 @@ async function page({
     purchase,
   } = await getChapter({
     userId: userId,
-    courseId: params.courseId,
-    chapterId: params.chapterId,
+    courseId: courseId,
+    chapterId: chapterId,
   });
 
   if (!chapter || !course) {
@@ -54,8 +55,8 @@ async function page({
       <div className="flex flex-col max-w-4xl mx-auto pb-10">
         <div className="px-4 pt-4">
         <VideoPlayer
-          chapterId={params.chapterId}
-          courseId={params.courseId}
+          chapterId={chapterId}
+          courseId={courseId}
           title={chapter.title}
           nextChapterId={nextChapter?.id||""}
           playbackId={muxData?.playbackId||""}
@@ -69,10 +70,14 @@ async function page({
           </h1>
           {
             purchase?(
-              <div></div>
+              <div>
+                <Button  variant="teacher" >
+                  Enorolled
+                </Button>
+              </div>
             ):(
               <CourseEnrollButton
-              courseId={params.courseId}
+              courseId={courseId}
               price={course.price!}
               />
             )
@@ -86,7 +91,7 @@ async function page({
            !!attachments.length && (
             <>
             <Separator/>
-            <div className="p-4 bg-pink-400">
+            <div className="p-4 flex flex-col gap-2">
               {
                 attachments.map((attachment)=>(
                   <a
@@ -96,7 +101,7 @@ async function page({
                   className="flex items-center p-3 w-full bg-sky-200 border text-sky-700 rounded-md hover:underline"
                   > 
                     <File/>
-                    <p className="line-clamp-1">
+                    <p className="line-clamp-1 pl-2">
                       {attachment.name}
                     </p>
 
