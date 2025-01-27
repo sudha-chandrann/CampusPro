@@ -1,8 +1,7 @@
 // src/app/(dashboard)/teacher/courses/CoursesClient.tsx (Client Component)
 "use client";
 
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+
 import { DataTable } from './DataTable';
 import { columns } from './Columns';
 
