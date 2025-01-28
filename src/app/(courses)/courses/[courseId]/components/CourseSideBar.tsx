@@ -30,7 +30,6 @@ async function CourseSideBar({course,progresscount}:CourseSideBarprops) {
     }
    })
 
-   console.log(" the  courses of side bar is ",course.chapters)
 
   return (
     <div className='h-full border-r flex flex-col overflow-y-auto shadow-md '>
@@ -58,7 +57,7 @@ async function CourseSideBar({course,progresscount}:CourseSideBarprops) {
                 key={chapter.id}
                 id={chapter.id}
                 label={chapter.title}
-                isCompleted={!!chapter.userProgress?.[0].isCompleted}
+                isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
                 courseId={course.id}
                 isLocked ={!chapter.isFree && !purchase}
 
