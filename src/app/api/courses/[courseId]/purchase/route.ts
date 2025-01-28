@@ -19,10 +19,15 @@ export async function POST(
             );
         }
         const { courseId } = await params;
+        const course = await db.course.findUnique({ where: { id: courseId } });
+        if (!course) {
+            return NextResponse.json({ error: "Course not found" }, { status: 404 });
+        }
         const purchase = await db.purchase.create({
             data: {
                 courseId: courseId,
-                userId: userId
+                userId: userId,
+                price: course?.price,
             }
         })
         if (!purchase) {

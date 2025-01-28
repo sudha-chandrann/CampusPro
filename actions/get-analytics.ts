@@ -15,7 +15,7 @@ const groupByCourse = (purchases:PurchaseWithCourse[])=>{
         if(!grouped[courseTitle]){
             grouped[courseTitle] = 0;
         }
-        grouped[courseTitle] += purchase.course.price!
+        grouped[courseTitle] += purchase.price!
     });
     return grouped;
 }
