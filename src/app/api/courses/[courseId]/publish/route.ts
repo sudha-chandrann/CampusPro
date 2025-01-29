@@ -8,6 +8,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = await auth();
+    const {courseId}= await params;
 
     if (!userId) {
       return NextResponse.json(
@@ -16,10 +17,10 @@ export async function PATCH(
       );
     }
     const courseOwner=await db.course.findUnique({
-        where: { id: params.courseId,userId },
+        where: { id: courseId,userId },
     })
     const publishedchapters=await db.chapter.findMany({
-        where: { courseId: params.courseId, isPublished: true },
+        where: { courseId: courseId, isPublished: true },
     })
   
     if(!courseOwner || !courseOwner.title || !courseOwner?.description || !courseOwner.imageUrl || !courseOwner.categroyId ||  !publishedchapters.length){
@@ -31,7 +32,7 @@ export async function PATCH(
     
     const updatedCourse = await db.course.update({
       where: {
-        id: params.courseId,
+        id: courseId,
       },
       data: {
         isPublished:true,

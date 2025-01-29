@@ -124,7 +124,7 @@ function ChapterAccessForm({
                 variant="teacher"
                 size="sm"
               >
-                {isSubmitting ? "Saving..." : "Save Description"}
+                {isSubmitting ? "Saving..." : "Save Access"}
               </Button>
             </div>
           </form>

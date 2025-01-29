@@ -1,10 +1,20 @@
+
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Mux from "@mux/mux-node";
+import { backendClient } from "@/lib/edgestore-server";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 
 if (!process.env.MUX_TOKEN_ID || !process.env.MUX_TOKEN_SECRET) {
-  console.log("Mux credentials are missing")
+  console.log("Mux credentials are missing");
   throw new Error("Mux credentials are missing");
 }
 
@@ -13,51 +23,117 @@ const mux = new Mux({
   tokenSecret: process.env.MUX_TOKEN_SECRET as string,
 });
 
-
 export async function DELETE(
   req: Request,
-  { params }: { params: { courseId: string; } }
+  { params }: { params: { courseId: string } }
 ) {
   try {
     const { userId } = await auth();
+    const { courseId } = await params;
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
-    if (!params.courseId) {
+    if (!courseId) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }
 
     const course = await db.course.findUnique({
-      where: { id: params.courseId, userId },
-      include:{
-        chapters:{
-          include:{
-            muxData:true,
+      where: { id: courseId },
+      include: {
+        chapters: {
+          include: {
+            muxData: true,
+          },
+        },
+        attachments: true,
+      },
+    });
+
+    if (!course || course.userId !== userId) {
+      return NextResponse.json({ error: "Course not found or access denied" }, { status: 403 });
+    }
+
+    // Delete all Mux video assets linked to the chapters
+    for (const chapter of course.chapters) {
+
+      // Delete chapter video from Cloudinary
+      if (chapter.videoUrl) {
+        try {
+          const publicId = chapter.videoUrl.split("/").pop()?.split(".")[0];
+          if (publicId) {
+            await cloudinary.uploader.destroy(publicId);
           }
+        } catch (error) {
+          console.error(`Failed to delete video ${chapter.videoUrl} from Cloudinary`, error);
+          return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+          );
         }
       }
-    });
 
-    if (!course) {
-      return NextResponse.json({ error: "not found" }, { status: 403 });
+
+      if (chapter.muxData?.assetId) {
+        try {
+          await mux.video.assets.delete(chapter.muxData.assetId);
+        } catch (error) {
+          console.error(`Failed to delete Mux asset ${chapter.muxData.assetId}`, error);
+          return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+          );
+        }
+      }
+
+
     }
 
-    for(const chapter of course.chapters){
-       if(chapter.muxData?.assertId){
-        await mux.video.assets.delete(chapter.muxData.assertId);
-       }
+    // Delete all attachments related to the course
+    for (const attachment of course.attachments) {
+      if (attachment.url) {
+        try {
+          // Replace this with your backend file deletion logic
+          await backendClient.publicFiles.deleteFile({
+            url: attachment.url,
+          });
+        } catch (error) {
+          console.error(`Failed to delete file ${attachment.url}`, error);
+          return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+          );
+        }
+      }
     }
-    
+    // Delete course image from Cloudinary
+    if (course.imageUrl) {
+      try {
+        const publicId = course.imageUrl.split("/").pop()?.split(".")[0];
+        if (publicId) {
+          await cloudinary.uploader.destroy(publicId);
+          console.log(`Deleted image ${publicId} from Cloudinary`);
+        }
+      } catch (error) {
+        console.error(`Failed to delete image ${course.imageUrl} from Cloudinary`, error);
+        return NextResponse.json(
+          { error: "Internal Server Error" },
+          { status: 500 }
+        );
+      }
+    }
+    // Delete the course record from the database
     await db.course.delete({
-      where: { id: course.id},
+      where: { id: course.id },
     });
 
-
-    return NextResponse.json({ message: "course is deleted successfully" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Course and all related data deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("[course_ID_delete_ERROR]", error);
+    console.error("[COURSE_DELETE_ERROR]", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -71,6 +147,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = await auth();
+    const { courseId } = await params;
 
     if (!userId) {
       return NextResponse.json(
@@ -80,10 +157,10 @@ export async function PATCH(
     }
 
     const values = await req.json();
-    
+
     const updatedCourse = await db.course.update({
       where: {
-        id: params.courseId,
+        id: courseId,
       },
       data: {
         ...values,

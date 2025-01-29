@@ -8,7 +8,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = await auth();
-
+    const {courseId}= await params;
     if (!userId) {
       return NextResponse.json(
         { error: "Unauthorized access" },
@@ -16,7 +16,7 @@ export async function PATCH(
       );
     }
     const courseOwner=await db.course.findUnique({
-        where: { id: params.courseId,userId },
+        where: { id: courseId,userId },
     })
 
     if(!courseOwner ){
@@ -28,7 +28,7 @@ export async function PATCH(
     
     const updatedCourse = await db.course.update({
       where: {
-        id: params.courseId,
+        id: courseId,
       },
       data: {
         isPublished:false,

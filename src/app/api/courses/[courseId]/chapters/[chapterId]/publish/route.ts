@@ -9,19 +9,20 @@ export async function PATCH(
 ) {
     try {
         const { userId } = await auth();
+        const {courseId,chapterId}= await params;
 
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
         }
 
 
-        if (!params.courseId || !params.chapterId) {
+        if (!courseId || !chapterId) {
             return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
         }
 
         // Verify the user owns the course before allowing updates
         const course = await db.course.findUnique({
-            where: { id: params.courseId, userId },
+            where: { id: courseId, userId },
         });
 
         if (!course) {
@@ -29,11 +30,11 @@ export async function PATCH(
         }
 
         const chapter = await db.chapter.findUnique({
-            where: { id: params.chapterId, courseId:params.courseId },
+            where: { id: chapterId, courseId:courseId },
         });
 
         const muxData = await db.muxData.findUnique({
-            where: { chapterId: params.chapterId }
+            where: { chapterId:chapterId }
         })
         if(!muxData|| !chapter || !chapter.title || !chapter.description || !chapter.videoUrl){
             return NextResponse.json({ error: "Missing required fields" }, { status: 403 });
@@ -41,8 +42,8 @@ export async function PATCH(
   
         const updatedChapter = await db.chapter.update({
             where: {
-                id: params.chapterId,
-                courseId: params.courseId,
+                id:chapterId,
+                courseId: courseId,
             },
             data: {
                 isPublished: true,

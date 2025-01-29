@@ -1,15 +1,15 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth();
-
+    const user = await currentUser()
     // Check if the user is authenticated
-    if (!userId) {
+    if ( !user|| !user.firstName|| !user.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
 
     // Parse the request body
     const body = await req.json();
@@ -23,8 +23,9 @@ export async function POST(req: Request) {
     // Create a new course in the database
     const course = await db.course.create({
       data: {
-        userId: userId,
+        userId: user.id,
         title: title,
+        author:user.fullName? user.fullName: user.firstName,
       },
     });
     return NextResponse.json(course);

@@ -8,6 +8,7 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
+    const {courseId}= await params;
 
     const body = await req.json();
     const { list } = body;
@@ -21,7 +22,7 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
 
     const courseOwner = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId: userId,
       },
     });

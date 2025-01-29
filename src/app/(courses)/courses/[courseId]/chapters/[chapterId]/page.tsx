@@ -91,9 +91,21 @@ async function page({
           <Preview content={chapter.description!}/>
         </div>
         {
+          course.description  && (
+            <>
+            <Separator/>
+            <p className="mt-4 italic text-slate-600">Course Description</p>
+            <div className="p-4  gap-2 bg-slate-200 rounded-md mt-2">
+             {course.description}
+            </div>
+            </>
+          )
+        }
+        {
            !!attachments.length && (
             <>
             <Separator/>
+            <p className="mt-4 italic text-slate-600">Course Attachments</p>
             <div className="p-4 flex flex-col gap-2">
               {
                 attachments.map((attachment)=>(
@@ -115,6 +127,9 @@ async function page({
             </>
           )
         }
+
+
+
       </div>
     </div>
   );

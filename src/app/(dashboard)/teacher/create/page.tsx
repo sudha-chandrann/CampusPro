@@ -3,7 +3,6 @@ import React from 'react';
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from 'react-hook-form';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'; 
 import {
@@ -41,6 +40,7 @@ function Page() {
         const response=await axios.post("/api/courses",values);
         router.push(`/teacher/courses/${response.data.id}`); 
         toast.success("new course is created successfully")
+        form.reset()
     }
     catch{
       toast.error("Something went wrong ");
@@ -48,7 +48,7 @@ function Page() {
   };
 
   return (
-    <div className="flex items-center justify-center h-full max-w-5xl mx-auto px-3">
+    <div className="flex items-center justify-center h-full max-w-5xl mx-auto px-3 ">
       <div className="flex flex-col justify-between p-2  gap-2  ">
         <h1 className="text-lg">Name your course</h1>
         <p className="text-sm md:text-md text-slate-600">
@@ -78,11 +78,9 @@ function Page() {
 
            
             <div className="flex items-center gap-x-2 w-full">
-              <Link href="/teacher/courses">
-                <Button type="button" variant="ghost">
+                <Button type="button" size="sm" onClick={()=> form.reset()} disabled={isSubmitting}>
                   Cancel
                 </Button>
-              </Link>
               <Button
                 type="submit"
                  variant="teacher"

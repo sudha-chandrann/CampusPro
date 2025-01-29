@@ -88,7 +88,7 @@ async function Page({ params }: { params: { courseId: string } }) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
-          <div className="space-y-4 w-full justify-items-center">
+          <div className="space-y-4 w-full justify-items-center mb-6">
             <div className="flex items-center gap-x-2 w-full min-w-[320px] lg:w-4/5">
               <IconBadge size="sm" icon={LayoutDashboard} />
               <h1 className="text-lg text-slate-600">Customize your course</h1>
@@ -114,7 +114,7 @@ async function Page({ params }: { params: { courseId: string } }) {
               }))}
             />
           </div>
-          <div className=" space-y-4 w-full justify-items-center">
+          <div className=" space-y-4 w-full justify-items-center mb-6">
             <div className="flex items-center gap-x-2 w-full lg:w-4/5 min-w-[320px]">
               <IconBadge size="sm" icon={ListChecks} />
               <h1 className="text-lg text-slate-600"> Course Chapters</h1>

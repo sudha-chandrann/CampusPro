@@ -49,6 +49,9 @@ function CoursesList({ items }: CourseListProps) {
               <p className="text-xs text-muted-foreground ">
                 {item?.category?.name}
               </p>
+              <p className="text-xs text-muted-foreground ">
+                Author: {item?.author}
+              </p>
               <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
                 <div className="flex items-center gap-x-1 text-slate-500">
                   <IconBadge icon={BookOpen} size="sm" />
@@ -61,6 +64,7 @@ function CoursesList({ items }: CourseListProps) {
                 </div>
               </div>
               <div className="h-8">
+
               {
                 (item.progress !== null ) ? (  
                          <CourseProgress

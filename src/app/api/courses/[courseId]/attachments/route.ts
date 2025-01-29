@@ -8,6 +8,7 @@ export async function POST(
 ) {
   try {
     const { userId } = await auth();
+    const {courseId}= await params;
 
     if (!userId) {
       return NextResponse.json(
@@ -21,7 +22,7 @@ export async function POST(
     // Check if the course belongs to the user
     const courseOwner = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId: userId, // Ensure the course belongs to the current user
       },
     });
@@ -38,7 +39,7 @@ export async function POST(
       data: {
         url,
         name: name || "Unnamed Attachment",
-        courseId: params.courseId,
+        courseId: courseId,
       },
     });
 

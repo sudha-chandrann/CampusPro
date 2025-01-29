@@ -7,11 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Course {
   id          String       @id @default(uuid())
   userId      String
+  author      String
   title       String       @db.Text
   description String?      @db.Text
   imageUrl    String?      @db.Text
@@ -28,15 +27,11 @@ model Course {
   @@index([categroyId], map: "Course_categroyId_fkey")
 }
 
-
-
 model Category {
   id      String   @id @default(uuid())
   name    String   @unique
   courses Course[]
 }
-
-
 
 model Attachment {
   id       String   @id @default(uuid())
@@ -49,8 +44,6 @@ model Attachment {
 
   @@index([courseId])
 }
-
-
 
 model Chapter {
   id           String         @id @default(uuid())
@@ -70,16 +63,13 @@ model Chapter {
   @@index([courseId])
 }
 
-
-
 model MuxData {
   id         String  @id @default(uuid())
   chapterId  String  @unique
-  assertId   String
+  assetId   String
   playbackId String?
   chapter    Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 }
-
 
 model UserProgress {
   id          String   @id @default(uuid())
@@ -94,26 +84,23 @@ model UserProgress {
   @@index([chapterId])
 }
 
-
-
 model Purchase {
   id        String   @id @default(uuid())
   userId    String
   courseId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   price     Float
-  @@index([courseId])
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
   @@unique([userId, courseId])
+  @@index([courseId])
 }
 
-
-
-model StripeCustomer {
-  id               String   @id @default(uuid())
-  userId           String   @unique
-  stripeCustomerId String   @unique @default(uuid())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
+// model StripeCustomer {
+//   id               String   @id
+//   userId           String   @unique
+//   stripeCustomerId String   @unique
+//   createdAt        DateTime @default(now())
+//   updatedAt        DateTime
+// }

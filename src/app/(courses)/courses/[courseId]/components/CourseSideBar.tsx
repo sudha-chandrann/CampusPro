@@ -37,6 +37,9 @@ async function CourseSideBar({course,progresscount}:CourseSideBarprops) {
             <h1 className='font-semibold text-sky-800'>
                 {course.title}
             </h1>
+             <p className="text-xs text-muted-foreground ">
+                By {course.author}
+              </p>
             {
                 purchase && (
                     <div className='mt-4'>

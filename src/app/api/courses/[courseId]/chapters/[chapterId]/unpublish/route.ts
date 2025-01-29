@@ -9,19 +9,20 @@ export async function PATCH(
 ) {
     try {
         const { userId } = await auth();
+        const {courseId,chapterId}= await params;
 
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
         }
 
 
-        if (!params.courseId || !params.chapterId) {
+        if (!courseId || !chapterId) {
             return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
         }
 
         // Verify the user owns the course before allowing updates
         const course = await db.course.findUnique({
-            where: { id: params.courseId, userId },
+            where: { id: courseId, userId },
         });
 
         if (!course) {
@@ -29,7 +30,7 @@ export async function PATCH(
         }
 
         const chapter = await db.chapter.findUnique({
-            where: { id: params.chapterId, courseId:params.courseId },
+            where: { id: chapterId, courseId:courseId },
         });
 
         if(!chapter ){
@@ -38,8 +39,8 @@ export async function PATCH(
   
         const updatedChapter = await db.chapter.update({
             where: {
-                id: params.chapterId,
-                courseId: params.courseId,
+                id: chapterId,
+                courseId: courseId,
             },
             data: {
                 isPublished: false,
@@ -47,12 +48,12 @@ export async function PATCH(
         });
         
         const publishedchapters=await db.chapter.findMany({
-            where: { courseId: params.courseId, isPublished: true },
+            where: { courseId: courseId, isPublished: true },
           })
       
           if(!publishedchapters.length){
             await db.course.update({
-              where: { id: params.courseId },
+              where: { id: courseId },
               data: {
                 isPublished: false
               }

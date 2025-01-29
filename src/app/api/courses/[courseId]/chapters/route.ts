@@ -10,14 +10,14 @@ export async function POST(req: Request,{ params }: { params: { courseId: string
     }
     const body = await req.json();
     const { title } = body;
-
+    const {courseId}= await params;
     if (!title || typeof title !== "string") {
       return new NextResponse("Invalid title", { status: 400 });
     }
 
     const courseOwner = await db.course.findUnique({
         where: {
-          id: params.courseId,
+          id: courseId,
           userId: userId, 
         },
       });
@@ -30,7 +30,7 @@ export async function POST(req: Request,{ params }: { params: { courseId: string
       }
      const lastChapter = await db.chapter.findFirst({
         where: {
-            courseId: params.courseId,
+            courseId: courseId,
         },
         orderBy:{
             position:"desc"
@@ -40,7 +40,7 @@ export async function POST(req: Request,{ params }: { params: { courseId: string
     const chapter = await db.chapter.create({
       data: {
         title: title,
-        courseId: params.courseId,
+        courseId: courseId,
         position:lastChapter? lastChapter.position+1:1
       },
     });

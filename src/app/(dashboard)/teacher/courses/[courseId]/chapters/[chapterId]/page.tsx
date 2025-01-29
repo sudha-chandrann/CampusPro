@@ -50,7 +50,7 @@ const ChapterIdPage = async ({
         />
       )}
       <div className="p-6 ">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ">
           <div className="w-full ">
             <Link
               href={`/teacher/courses/${courseId}`}
@@ -73,7 +73,7 @@ const ChapterIdPage = async ({
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10 ">
-          <div className="space-y-4 w-full justify-items-center">
+          <div className="space-y-4 w-full justify-items-center mb-6">
             <div className="flex items-center gap-x-2 w-full lg:w-4/5">
               <IconBadge icon={LayoutDashboard} />
               <h2 className="text-xl text-slate-600">Customize your chapter</h2>
@@ -98,7 +98,7 @@ const ChapterIdPage = async ({
               courseId={courseId}
             />
           </div>
-          <div className="space-y-4  w-full justify-items-center">
+          <div className="space-y-4  w-full justify-items-center mb-6">
             <div className="flex items-center gap-x-2 w-full lg:w-4/5">
               <IconBadge icon={Video} />
               <h2 className="text-lg text-slate-600">Add a video</h2>

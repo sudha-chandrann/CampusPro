@@ -10,6 +10,7 @@ export async function DELETE(
 ) {
   try {
     const { userId } = await auth();
+    const {courseId,attachmentId}= await params;
 
     if (!userId) {
       return NextResponse.json(
@@ -20,7 +21,7 @@ export async function DELETE(
 
     const courseOwner = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
       },
     });
 
@@ -33,24 +34,25 @@ export async function DELETE(
 
     const attachment = await db.attachment.findUnique({
       where: {
-        id: params.attachmentId,
+        id:attachmentId,
       },
     });
 
-    if (!attachment || attachment.courseId !== params.courseId) {
+    if (!attachment || attachment.courseId !== courseId) {
       return NextResponse.json(
         { error: "Attachment not found or doesn't belong to this course" },
         { status: 404 }
       );
     }
-     await backendClient.publicFiles.deleteFile({
+    
+    await backendClient.publicFiles.deleteFile({
       url: attachment.url,
     });
 
 
     await db.attachment.delete({
       where: {
-        id: params.attachmentId,
+        id: attachmentId,
       },
     });
 

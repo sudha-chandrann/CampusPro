@@ -89,7 +89,7 @@ function PriceForm({ initialData, courseId }: PriceFormProps) {
             />
             <div className="flex items-center gap-x-2">
             <Button type="submit" disabled={isSubmitting || !isValid} variant="teacher" size="sm">
-              {isSubmitting ? "Saving..." : "Save Course Proce"}
+              {isSubmitting ? "Saving..." : "Save Course Price"}
             </Button>
             </div>
 

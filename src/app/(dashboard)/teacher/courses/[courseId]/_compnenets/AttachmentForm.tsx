@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import * as z from "zod";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { CloudUploadIcon, File, Loader2, PlusCircle, X } from "lucide-react";
@@ -14,10 +13,11 @@ interface AttachmentFormProps {
   courseId: string;
 }
 
-const formSchema = z.object({
-  url: z.string().min(1),
-  name: z.string().min(1),
-});
+interface AttachmentFormState {
+  url:string;
+  name: string;
+}
+
 
 function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -27,12 +27,12 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
   const { edgestore } = useEdgeStore();
   const [name,setname]=useState<string>("");
   const [progress,setprogress]=useState(0);
-
+  const [isloading,setisloading]=useState(false);
   useEffect(()=>{
     console.log("the file  is ",file)
   },[file])
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: AttachmentFormState) => {
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
       toast.success("Course attachment updated successfully!");
@@ -42,6 +42,9 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
     } catch (error) {
       console.error("Error updating Course Image:", error);
       toast.error("Something went wrong. Please try again.");
+    }
+    finally{
+      setisloading(false)
     }
   };
 
@@ -63,7 +66,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
     <div className="w-full lg:w-4/5 min-w-[320px]  p-3 md:p-4  bg-slate-100 rounded-md">
       <div className="font-medium flex items-center justify-between">
         <span>Course Attachment</span>
-        <Button variant="ghost" onClick={toggleEdit}>
+        <Button variant="ghost" onClick={toggleEdit} disabled={isloading}>
           {isEditing && <>Cancel</>}
           {!isEditing && (
             <>
@@ -122,8 +125,10 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
             className="flex items-center justify-center"
               type="file"
               onChange={(e) => {
-                setFile(e.target.files?.[0]);
-                setname(e.target.files?.[0].name)
+                if(e.target.files?.[0]){
+                  setFile(e.target.files?.[0]);
+                  setname(e.target.files?.[0].name)
+                }
               }}
             />
             <div className="h-[6px] w-44 border rounded overflow-hidden">
@@ -139,6 +144,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
               size="teacher"
               onClick={async () => {
                 if (file) {
+                  setisloading(true)
                   const res = await edgestore.publicFiles.upload({
                     file,
                     onProgressChange: (progress) => {
@@ -149,6 +155,7 @@ function AttachmentForm({ initialData, courseId }: AttachmentFormProps) {
                   console.log("the response is ",res);
                 }
               }}
+              disabled={isloading}
             >
               Upload
             </Button>
