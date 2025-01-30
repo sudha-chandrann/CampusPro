@@ -19,7 +19,7 @@ import { Combobox } from "@/components/ui/combobox";
 
 interface categroyFormProps {
   initialData:{
-    categroyId:string|null
+    categroyId:string
   };
   options:{label:string; value:string}[];
   courseId: string;
@@ -33,7 +33,9 @@ function CategoryForm({ initialData, courseId,options }: categroyFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues:{ 
+     categroyId: initialData.categroyId
+    },
   });
 
   const { isSubmitting ,isValid} = form.formState;
@@ -52,7 +54,6 @@ function CategoryForm({ initialData, courseId,options }: categroyFormProps) {
     }
   };
   
-
   const toggleEdit = () => setIsEditing((current) => !current);
   const selectedOption=options.find((option)=>option.value ===  initialData.categroyId)
 
@@ -78,7 +79,7 @@ function CategoryForm({ initialData, courseId,options }: categroyFormProps) {
                 <FormItem>
                   <FormControl>
                     <Combobox 
-                    options={...options} 
+                    options={options} 
                     {...field}/>
                   </FormControl>
                   <FormMessage />
