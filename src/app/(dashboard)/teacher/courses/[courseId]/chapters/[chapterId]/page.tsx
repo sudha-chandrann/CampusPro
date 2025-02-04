@@ -14,10 +14,12 @@ import ChapterActions from "./_components/ChapterActions";
 const ChapterIdPage = async ({
   params,
 }: {
-  params: { courseId: string; chapterId: string };
+  params: Promise<{ courseId: string; chapterId: string }>;
 }) => {
   const { userId } = await auth();
-  const { courseId, chapterId } = await params;
+
+  const { courseId, chapterId } =  await params;
+
   if (!userId) {
     return redirect("/");
   }
@@ -37,10 +39,15 @@ const ChapterIdPage = async ({
   }
 
   const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
+
   const totalFields = requiredFields.length;
+
   const completedFields = requiredFields.filter(Boolean).length;
+
   const completionText = `( ${completedFields}/${totalFields})`;
+  
   const iscomplete=requiredFields.every(Boolean);
+
   return (
     <>
       {!chapter.isPublished && (

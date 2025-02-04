@@ -24,7 +24,7 @@ const mux = new Mux({
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string } }
+  { params }: { params: Promise<{ courseId: string; chapterId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -111,7 +111,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string } }
+  { params }: { params: Promise<{ courseId: string; chapterId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -158,7 +158,7 @@ export async function DELETE(
 
       const existingMuxData = await db.muxData.findFirst({
         where: {
-          chapterId: params.chapterId
+          chapterId: chapterId
         }
       });
       if (existingMuxData) {
@@ -172,7 +172,7 @@ export async function DELETE(
     }
 
     await db.chapter.delete({
-      where: { id: params.chapterId, courseId: params.courseId },
+      where: { id: chapterId, courseId: courseId },
     });
 
 
@@ -182,7 +182,7 @@ export async function DELETE(
 
     if(!publishedchapters.length){
       await db.course.update({
-        where: { id: params.courseId },
+        where: { id: courseId },
         data: {
           isPublished: false
         }

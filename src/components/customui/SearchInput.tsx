@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useDebounce } from "../../../hooks/use-debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
@@ -35,6 +35,7 @@ function SearchInput() {
   }, [debouncedValue,currentCategoryId,router,pathname]);
 
   return (
+  
     <div className=" flex items-center justify-center w-full ">
       <Search className="relative z-10 w-8 h-8  text-slate-600 " />
       <Input
@@ -44,6 +45,7 @@ function SearchInput() {
         onChange={(e) => setvalue(e.target.value)}
       />
     </div>
+
   );
 }
 

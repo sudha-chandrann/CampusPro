@@ -2,14 +2,14 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 async function page({params}:{
-  params:{
+  params:Promise<{
     courseId:string;
-  }
+  }>
 })  {
-    
+    const {courseId}=await params;
     const course = await db.course.findUnique({
       where:{
-        id:params.courseId
+        id:courseId
       },
       include:{
         chapters:{

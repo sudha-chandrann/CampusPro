@@ -18,9 +18,12 @@ import ChapterForm from "./_compnenets/ChapterForm";
 import Banner from "@/components/customui/Banner";
 import CourseActions from "./_compnenets/CourseAction";
 
-async function Page({ params }: { params: { courseId: string } }) {
+
+
+async function Page({ params }: { params: Promise<{ courseId: string }> }) {
   const { userId } = await auth();
   const { courseId } = await params;
+
   if (!userId) {
     console.error("User not authenticated");
     return redirect("/");
@@ -106,7 +109,7 @@ async function Page({ params }: { params: { courseId: string } }) {
               courseId={courseId}
             />
             <CategoryForm
-              initialData={course}
+              initialData={{ categroyId: course.categroyId }}
               courseId={courseId}
               options={categories.map((category) => ({
                 label: category.name,

@@ -6,11 +6,11 @@ import { NextResponse } from "next/server";
 
 export async function PUT(
     req: Request,
-    { params }: { params: { courseId: string; chapterId: string } }
+    { params }: { params: Promise<{ courseId: string; chapterId: string }>}
 ) {
     try {
         const { userId } = await auth();
-        const {  chapterId } = params;
+        const {  chapterId } =await params;
 
         const body = await req.json();
         const { isCompleted } = body;

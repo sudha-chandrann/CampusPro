@@ -19,14 +19,14 @@ import { Combobox } from "@/components/ui/combobox";
 
 interface categroyFormProps {
   initialData:{
-    categroyId:string
+    categroyId:string| null
   };
   options:{label:string; value:string}[];
   courseId: string;
 }
 
 const formSchema = z.object({
-    categroyId: z.string().min(1, { message: "categroy is required" }),
+    categroyId: z.string().min(1, { message: "categroy is required" }).nullable(),
 });
 
 function CategoryForm({ initialData, courseId,options }: categroyFormProps) {
@@ -34,7 +34,7 @@ function CategoryForm({ initialData, courseId,options }: categroyFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:{ 
-     categroyId: initialData.categroyId
+     categroyId: initialData.categroyId??""
     },
   });
 
@@ -79,8 +79,10 @@ function CategoryForm({ initialData, courseId,options }: categroyFormProps) {
                 <FormItem>
                   <FormControl>
                     <Combobox 
-                    options={options} 
-                    {...field}/>
+                    options={options}
+                    {...field} 
+                    value={field.value??undefined}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -45,18 +45,18 @@ function CategoryItem({
 
 
   return (
-    <button 
-    onClick={()=>{onClick()}}
-    className={cn("py-2 px-4 text-sm border border-slate-200 rounded-full flex  items-center gap-x-1 hover:bg-sky-700  hover:text-white transition",
-     isSelected && " border-sky-700 bg-sky-200/20 text-sky-800"
-    )}
-    type='button'
-    >
-       {Icon && <Icon size={20}/>}
-       <div className='truncate'>
-        {label}
-       </div>
-    </button>
+   <button 
+  onClick={()=>{onClick()}}
+  className={cn("py-2 px-4 text-sm border border-slate-200 rounded-full flex  items-center gap-x-1 hover:bg-sky-700  hover:text-white transition",
+   isSelected && " border-sky-700 bg-sky-200/20 text-sky-800"
+  )}
+  type='button'
+  >
+     {Icon && <Icon size={20}/>}
+     <div className='truncate'>
+      {label}
+     </div>
+  </button>
   )
 }
 

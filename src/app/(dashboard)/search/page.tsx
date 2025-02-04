@@ -9,10 +9,10 @@ import CoursesList from "@/components/customui/CoursesList";
 
 
 interface SearchPageProps{
-  searchParams:{
+  searchParams:Promise<{
     title:string;
     category:string;
-  }
+  }>
 }
 
 
@@ -20,7 +20,7 @@ const SearchPage = async ({
   searchParams
 }:SearchPageProps) =>{
   const {userId} =await auth();
-
+  const {title,category}= await searchParams;
   if(!userId){
     return redirect("/");
   }
@@ -30,13 +30,16 @@ const SearchPage = async ({
      }
    })  
 
-   const courses=await getCourses({userId,...searchParams})
+   const courses=await getCourses({userId:userId,title:title,categoryId:category})
 
   return (
-    <>
+ 
+     <>
     <div>
     <div className="md:hidden md:mb-0  w-full pt-3 ml-5 flex items-center">
-     <SearchInput/>
+      
+        <SearchInput />
+      
     </div>
     <div className="w-full">
       <Categories  items={categories}/>
@@ -45,6 +48,7 @@ const SearchPage = async ({
     </div>
 
     </>
+   
 
   )
 }

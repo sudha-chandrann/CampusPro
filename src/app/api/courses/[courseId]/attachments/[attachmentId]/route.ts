@@ -1,12 +1,12 @@
 import { db } from "@/lib/db";
 import { backendClient } from "@/lib/edgestore-server";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
   
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { attachmentId: string; courseId: string } }
+  req:NextRequest,
+  { params }: { params: Promise<{ attachmentId: string; courseId: string }>}
 ) {
   try {
     const { userId } = await auth();
@@ -22,10 +22,11 @@ export async function DELETE(
     const courseOwner = await db.course.findUnique({
       where: {
         id: courseId,
+        userId:userId
       },
     });
 
-    if (!courseOwner || courseOwner.userId !== userId) {
+    if (!courseOwner ) {
       return NextResponse.json(
         { error: "Unauthorized access to this course" },
         { status: 403 }

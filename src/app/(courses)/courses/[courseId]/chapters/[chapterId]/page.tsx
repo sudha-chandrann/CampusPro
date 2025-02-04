@@ -10,19 +10,22 @@ import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
 import CourseProgressButton from "../../components/CourseProgressButton";
 
+
+
+
 async function page({
   params,
 }: {
-  params: {
+  params:Promise< {
     courseId: string;
     chapterId: string;
-  };
+  }>;
 }) {
   const { userId } = await auth();
   if (!userId) {
     return redirect("/");
   }
- const {courseId, chapterId}=await params;
+  const {courseId,chapterId}= await params;
   const {
     chapter,
     course,

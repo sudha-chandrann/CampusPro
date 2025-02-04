@@ -119,7 +119,7 @@ export default async function Home() {
             Unlock the power of knowledge with our comprehensive features
             designed to enhance your learning experience.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-12 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 ">
             {data.map((feature, index) => (
               <div
                 key={index}
